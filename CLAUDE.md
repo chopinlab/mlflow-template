@@ -20,7 +20,14 @@ This is an MLflow-based machine learning template for rapid model training and e
 
 ### Setup and Installation
 ```bash
-pip install -r requirements.txt
+# Initialize uv project (if not already done)
+uv init
+
+# Install dependencies
+uv sync
+
+# Or install in development mode
+uv pip install -e .
 ```
 
 ### Run Training
@@ -28,13 +35,17 @@ pip install -r requirements.txt
 # Method 1: Using the run script
 ./run.sh
 
-# Method 2: Direct execution
-python train.py
+# Method 2: Direct execution with uv
+uv run python train.py
+
+# Method 3: Activate virtual environment and run
+uv run --python 3.11 python train.py
 ```
 
 ### MLflow UI
 ```bash
-mlflow ui
+# Run MLflow UI with uv
+uv run mlflow ui
 # Access at http://localhost:5000
 ```
 
