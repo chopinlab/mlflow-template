@@ -59,7 +59,6 @@ mlflow ui
 - To change experiment name: Pass different `experiment_name` to `train_model()`
 
 
-
 ## Git Commit Guidelines
 - When creating commits, remove any Anthropic/Claude attribution footers or co-author information
 - Keep commit messages clean and focused on the actual changes
