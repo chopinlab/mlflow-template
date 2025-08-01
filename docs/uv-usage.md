@@ -151,8 +151,112 @@ uv python install 3.11
 uv sync --user
 ```
 
+## Python 버전 관리
+
+UV는 Python 버전 관리도 지원합니다. pyenv 없이도 다양한 Python 버전을 쉽게 설치하고 관리할 수 있습니다.
+
+### Python 버전 확인
+```bash
+# 현재 사용 중인 Python 버전
+python3 --version
+uv run --no-project python --version
+
+# 설치된 모든 Python 버전 확인
+uv python list --only-installed
+
+# 사용 가능한 모든 Python 버전 확인
+uv python list
+```
+
+### Python 설치 및 관리
+```bash
+# 특정 버전 설치
+uv python install 3.13
+uv python install 3.12
+uv python install 3.11
+
+# Python 3.13 Free-threaded (NoGIL) 설치
+uv python install 3.13.5+freethreaded
+
+# 최신 버전 설치
+uv python install 3.13
+```
+
+### 프로젝트별 Python 버전 지정
+```bash
+# 프로젝트에 Python 버전 고정
+uv python pin 3.13
+
+# 특정 버전으로 가상환경 생성
+uv sync --python 3.13
+
+# 특정 버전으로 명령 실행
+uv run --python 3.13 python script.py
+uv run --python 3.12 python script.py
+```
+
+### .python-version 파일
+```bash
+# 프로젝트 루트에 .python-version 파일 생성
+echo "3.13" > .python-version
+
+# UV가 자동으로 해당 버전 사용
+uv sync
+```
+
+### Python 버전별 특징 비교
+
+| 버전 | 주요 특징 | 사용 권장 |
+|------|-----------|-----------|
+| 3.13 | NoGIL 지원, JIT 컴파일러 | 최신 기능 실험 |
+| 3.12 | 성능 향상, f-string 개선 | 일반적 사용 |
+| 3.11 | 큰 성능 향상 (10-60%) | 안정성 중시 |
+| 3.10 | Pattern matching | 레거시 호환 |
+
+### Free-threaded Python (NoGIL) 사용법
+```bash
+# Free-threaded 버전 설치
+uv python install 3.13.5+freethreaded
+
+# Free-threaded로 실행
+uv run --python 3.13.5+freethreaded python script.py
+
+# GIL 상태 확인
+uv run --python 3.13.5+freethreaded --no-project python -c "
+import sys
+print(f'Free-threading: {hasattr(sys.flags, \"gil\")}')
+if hasattr(sys.flags, 'gil'):
+    print(f'GIL disabled: {sys.flags.gil == 0}')
+"
+```
+
+### 팀 개발에서의 Python 버전 관리
+```bash
+# 팀 전체가 동일한 버전 사용
+uv python pin 3.13
+
+# .python-version 파일을 git에 커밋
+git add .python-version
+git commit -m "fix: Python 버전 3.13으로 고정"
+
+# 팀원들이 프로젝트 클론 후
+uv sync  # 자동으로 지정된 Python 버전 사용
+```
+
+### 버전 호환성 주의사항
+```bash
+# Free-threaded 버전은 실험적 기능
+# 일부 패키지가 호환되지 않을 수 있음
+# 프로덕션에서는 일반 버전 사용 권장
+
+# 호환성 문제 발생 시
+uv python pin 3.13  # 일반 버전으로 변경
+uv sync --reinstall
+```
+
 ## 추가 리소스
 
 - [UV 공식 문서](https://docs.astral.sh/uv/)
 - [UV GitHub 저장소](https://github.com/astral-sh/uv)
 - [Migration Guide](https://docs.astral.sh/uv/guides/migrate-from-pip/)
+- [Python 3.13 Free-threading 가이드](https://docs.python.org/3.13/whatsnew/3.13.html#free-threaded-cpython)
