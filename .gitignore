@@ -1,6 +1,8 @@
 # MLflow
 mlruns/
 mlartifacts/
+mlflow.env
+.env
 
 # Python
 __pycache__/
